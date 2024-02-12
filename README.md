@@ -21,3 +21,4 @@ Insertar al final
 Eliminar por valor
 Mostrar lista
 Salir
+Etc
