@@ -37,7 +37,7 @@ class ListaDobleE:
     def print(self): 
         tmp = self.cabeza
         while tmp != None:
-            print(f"Nombre: {tmp.nombre}, Apellido: {tmp.apellido}, Carnet: {tmp.carnet}", end=" ")
+            print(f"Nombre: {tmp.nombre}, Apellido: {tmp.apellido}, Carnet: {tmp.carnet}", end="<->")
             tmp = tmp.sig
 
     def eliminarInicio(self): 
@@ -58,7 +58,7 @@ try:
         opc = 0
         nNodo = ListaDobleE()
         while opc != 5:
-            print("**** Menu ****")
+            print("\n **** Menu ****", end='\n')
             print("**** Elige una opción para ingresar hacer una acción ****")
             print("1 - Inserta un nuevo nodo al principio")
             print("2 - Inserta un nuevo nodo al final")
