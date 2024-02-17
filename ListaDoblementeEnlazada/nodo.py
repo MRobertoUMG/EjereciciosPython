@@ -1,48 +1,88 @@
 class Nodo:
-    def __init__(self, data):
-        self.name = data["name"]
-        self.surname = data["surname"]
-        self.id = data["id"]
+    def __init__(self, nombre, apellido, carnet):
+        self.nombre = nombre
+        self.apellido = apellido
+        self.carnet = carnet
         self.sig = None
         self.ant = None
 
-class ListaDoble:
-    #root
+class ListaDobleE:
     def __init__(self):
         self.cabeza = None
         self.cola = None
+        self.tam = 0
 
-    def insertarAlPrincipio(self, data):
-        nuevoNodo = Nodo(data)
-        nuevoNodo.sig = self.cabeza
-        self.cabeza = nuevoNodo
+    def vacia(self):
+        return self.cabeza == None    
 
-    def insertarAlFinal(self, data):
-        nuevoNodo = Nodo(data)
-        nuevoNodo.ant = self.cola
-        self.cola = nuevoNodo
+    def agregarFinal(self, nombre, apellido, carnet):
+        if self.vacia():
+            self.cabeza = self.cola = Nodo(nombre, apellido, carnet)
+        else:
+            tmp = self.cola
+            self.cola = tmp.sig = Nodo(nombre, apellido, carnet)
+            self.cola.ant = tmp
+        self.tam += 1
+
+    def agregarInicio(self, nombre, apellido, carnet):
+        if self.vacia():
+            self.cabeza = self.cola = Nodo(nombre, apellido, carnet)
+        else:
+            tmp = Nodo(nombre, apellido, carnet)
+            tmp.sig = self.cabeza
+            self.cabeza.ant = tmp
+            self.cabeza = tmp
+        self.tam += 1
+
+    def print(self): 
+        tmp = self.cabeza
+        while tmp != None:
+            print(f"Nombre: {tmp.nombre}, Apellido: {tmp.apellido}, Carnet: {tmp.carnet}", end=" ")
+            tmp = tmp.sig
+
+    def eliminarInicio(self): 
+        if self.vacia():
+            print("Lista vacía")
+        elif self.cabeza.sig == None:
+            self.cabeza = self.cola = None
+            self.tam = 0
+        else:
+            self.cabeza = self.cabeza.sig
+            self.cabeza.ant = None
+            self.tam -= 1
+
     
-    def imprimir(self):
-        #insertPrincipio
-        actual = self.cabeza
-        while actual:
-            print(actual.name, end=" -> ")
-            actual = actual.sig
-        #insertFinal
-        ultimo = self.cola
-        while ultimo:
-            print(ultimo.name, end=" -> ")
-            ultimo = ultimo.ant
-        print("None")
 
+try:
+    if __name__ == "__main__":
+        opc = 0
+        nNodo = ListaDobleE()
+        while opc != 5:
+            print("**** Menu ****")
+            print("**** Elige una opción para ingresar hacer una acción ****")
+            print("1 - Inserta un nuevo nodo al principio")
+            print("2 - Inserta un nuevo nodo al final")
+            print("3 - Eliminar el primer nodo")
+            print("4 - Muestrar lista")
+            opc = int(input("Ingrese su opción: "))
 
-nodo = ListaDoble()
-nodo.insertarAlPrincipio({"name":"Mario", "surname":"Rompich", "id":213})
-nodo.insertarAlPrincipio({"name":"Jonh", "surname":"Jerez", "id":257})
-nodo.insertarAlPrincipio({"name":"nathy", "surname":"Jerez", "id":257})
-
-nodo.insertarAlFinal({"name":"Astrid", "surname":"Archila", "id":2045})
-nodo.imprimir()
-
-
-
+            if opc == 1:
+                nombre = input("Ingresa el nombre: ")
+                apellido = input("Ingresa el apellido: ")
+                carnet = input("Ingresa el carnet: ")
+                nNodo.agregarInicio  (nombre, apellido, carnet)
+            elif opc == 2:
+                nombre = input("Ingresa el nombre: ")
+                apellido = input("Ingresa el apellido: ")
+                carnet = input("Ingresa el carnet: ")
+                nNodo.agregarFinal(nombre, apellido, carnet)
+            elif opc == 3:
+                nNodo.eliminarInicio()
+            elif opc == 4:
+                nNodo.print()
+            elif opc == 5:
+                print("Salió")
+            else:
+                print("opción inválida.")
+except Exception as e:
+    print(e)
