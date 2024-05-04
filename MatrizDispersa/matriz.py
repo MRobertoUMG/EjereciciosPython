@@ -4,15 +4,14 @@ import matplotlib.pyplot as plt
 
 class matrizDispersa:
     def __init__(self):
-        self.mat = []
+        self.main_matrix = []
        
-
     def cargar_csv_a_matriz(self,archivo):        
         for linea in archivo:
-            self.mat.append(linea)
+            self.main_matrix.append(linea)
             
     def mostrar_matriz(self):
-        for linea in self.mat:
+        for linea in self.main_matrix:
             #for ele in linea:
                 #print(linea[ele])
             print(linea)
@@ -24,13 +23,14 @@ class matrizDispersa:
             insert_matriz_manual = []
             print(f"---- Ingrese los datos de la FILA  {i+1} ----")
             for j in range(n_col):
-                edad = int(input("Edad de las personas que presentan la insuficiencia: "))
-                insert_matriz_manual.append(edad)
-        self.mat.append(insert_matriz_manual)
-
-    #numero = input("Número de personas por insuficiencia cardíaca()")
+                indice = int(input("Ingrese el valor de las columna: "))
+                insert_matriz_manual.append(indice)
+            #print(insert_matriz_manual)
+            self.main_matrix.append(insert_matriz_manual)
+            #print(self.main_matrix)
     
-    def generar_grafica(self, matrix):
+    def generar_grafica(self):
+        matrix = self.main_matrix
            # Crear un gráfico dirigido
         dot = Digraph()
 
@@ -66,24 +66,45 @@ class matrizDispersa:
         plt.axis('off')
         plt.show()
 
-    
-
-nMatriz = matrizDispersa()           
-
-'''nombre_archivo = input("Introduce el nombre del archivo: ")
-with open(nombre_archivo, "r") as archivo:
    
-        #matrix.append([linea])
-        nMatriz.cargar_csv_a_matriz(archivo)'''
 
+try:
+    if __name__ == "__main__":
+        opc = 0
+        nMatriz = matrizDispersa()
+
+        while opc != 6:
+            print("\n------------------------------------------------",)
+            print("**** Menu de Matriz Dispersa ****", end='\n')
+            print("Elige una opción (Número) para ingresar hacer una acción")
+            print("-------------------------------------------------")
+            print("1 - Cargar el archivo CSV para la matriz dispersa")
+            print("2 - Ingresar la matriz dispersa manualmente")
+            print("3 - Visualizar los datos de la matriz por consola")
+            print("4 - Generar gráfica de la matriz")
+            print("5 - Salir")
+            opc = int(input("Ingrese su opción(Número): "))
+
+            if opc == 1:
+                nombre_archivo = input("Arrastra el archivo CSV para la matriz dispersa: ")
+                with open(nombre_archivo, "r") as archivo:
+                    #matrix.append([linea])
+                    nMatriz.cargar_csv_a_matriz(archivo)
+            elif opc == 2:
+                nMatriz.insertar_matriz()
+            elif opc == 3:
+                nMatriz.mostrar_matriz()
+            elif opc == 4:
+                nMatriz.generar_grafica()
+            elif opc == 5:
+                  print("Sesión Terminada, si necesita ingresar nuevamente ejecute el codigo en CLI")
+            else:
+                print("opción inválida.")
+except Exception as e:
+    print(e)
 
 #------------------------------------------------------------------------------#
+#matrix = np.array([[1, 2, 3],[4, 5, 6],[7, 8, 9]])
+#nmatrix = np.array(nMatriz.main_matrix)
 
-matrix = np.array([[1, 2, 3],
-                   [4, 5, 6],
-                   [7, 8, 9]])
-
-#nMatriz.generar_grafica(nMatriz.mat)
-nMatriz.insertar_matriz()
-nMatriz.mostrar_matriz()
 
