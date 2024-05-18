@@ -27,24 +27,43 @@ class ListaSimple:
         self.cabeza = None
  
     def funcion_iniciar(self):
-         for i in range(0,9):
+
+        for i in range(0,9):
             nuevo_nodo = Nodo({"posicion": i, "valor": "Null" })
             nuevo_nodo.siguiente = self.cabeza
             self.cabeza = nuevo_nodo
+        #ListaSimple.desbloquear(self)
 
+        mi_lista.imprimir_lista()
+
+        global nombre_jugador_1, nombre_jugador_2
+        nombre_jugador_1 = simpledialog.askstring("Jugador", "Escriba el nombre del juador 1: ")
+        nombre_jugador_2 = simpledialog.askstring("Jugador", "Escriba el nombre del juador 2: ")
+
+        turno_jugador.set("Turno: " + nombre_jugador_1)
+      
     def asignar_X_O(self,get_posicion):
+        global turno, nombre_jugador_1,nombre_jugador_2
+        
         actual1 = self.cabeza
+        
         while actual1:
            
-            if actual1.dato["posicion"] == get_posicion:
+            if actual1.dato["posicion"] == get_posicion and turno == 0:
                 actual1.dato["valor"] = "X"
                 lista_btns[get_posicion].config(bg="white")
-                #lista_btns[get_posicion].config(bg="gray")
                 lista_btns[get_posicion].config(text="X")
-                lista_btns[get_posicion].config(state="disable")
-            #else:
-                #print("No esta el valor")
-                #print("---")
+                #lista_btns[get_posicion].config(state="disable")
+                turno = 1
+                turno_jugador.set("Turno: " + nombre_jugador_2)
+            elif actual1.dato["posicion"] == get_posicion and turno == 1:
+                actual1.dato["valor"] = "O"
+                lista_btns[get_posicion].config(bg="lightblue")
+                lista_btns[get_posicion].config(text="O")
+                #lista_btns[get_posicion].config(state="disable")
+                turno = 0
+                turno_jugador.set("Turno: " + nombre_jugador_1)
+            lista_btns[get_posicion].config(state="disable")
             actual1 = actual1.siguiente
             
         actual = self.cabeza
@@ -55,23 +74,27 @@ class ListaSimple:
             
         #print("None")
         #print(posicion  mcvv)
+    def desbloquear(self):
+        for i in range(0,9):
+            lista_btns[i].config(state="normal")
+
     def bloquear(self):
         for i in range(0,9):
             lista_btns[i].config(state="disable")
 
-    def retirar_primero(self):
+    '''def retirar_primero(self):
         if self.cabeza:
-            self.cabeza = self.cabeza.siguiente
+            self.cabeza = self.cabeza.siguiente´'''
 
-    def retirar_ultimo(self):
+    '''def retirar_ultimo(self):
         if self.cabeza.siguiente == None:
             self.cabeza = None
         else:
             actual = self.cabeza
             while actual.siguiente.siguiente != None:
                 actual = actual.siguiente
-            actual.siguiente = None
-
+            actual.siguiente = None'''
+    
     def imprimir_lista(self):
         actual = self.cabeza
         while actual:
@@ -81,7 +104,7 @@ class ListaSimple:
 
 
 mi_lista = ListaSimple()
-#mi_lista.funcion_iniciar()
+
 
 #BUTTONS
 btn0 = Button(window, width=8, height=4, bg="#011A27", command=lambda: mi_lista.asignar_X_O(0))
@@ -113,18 +136,14 @@ lista_btns.append(btn8)
 btn8.place(x=250,y=250)
 
 mostrar_turno_participante = Label(window, textvariable=turno_jugador).place(x=100, y=20)
-iniciar_juego = Button(window, background="green", borderwidth=0,  fg="white", text="Iniciar juego", width=15, height=3,command=mi_lista.funcion_iniciar()).place(x=130, y=350)
+iniciar_juego = Button(window, background="green", borderwidth=0,  fg="white", text="Iniciar juego", width=15, height=3,command=lambda: mi_lista.funcion_iniciar()).place(x=130, y=350)
+#
 #mi_lista.bloquear()
-mi_lista.imprimir_lista()
 #print("Retira el ultimo elemento de la lista")
 #mi_lista.retirar_ultimo()
 #mi_lista.imprimir_lista()
 #print("Retira el primer elemento de la lista")
 #mi_lista.retirar_primero()
 #mi_lista.imprimir_lista()
-
-
-
-#bloquear()
 
 window.mainloop()
