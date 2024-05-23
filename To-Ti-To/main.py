@@ -37,10 +37,10 @@ class ListaSimple:
         mi_lista.imprimir_lista()
 
         global nombre_jugador_1, nombre_jugador_2
-        nombre_jugador_1 = simpledialog.askstring("Jugador", "Escriba el nombre del juador 1: ")
-        nombre_jugador_2 = simpledialog.askstring("Jugador", "Escriba el nombre del juador 2: ")
+        nombre_jugador_1 = simpledialog.askstring("Jugador", "Nombre del juador: ")
+        nombre_jugador_2 = "Máquina"
 
-        turno_jugador.set("Turno: " + nombre_jugador_1)
+        turno_jugador.set("TURNO: " + nombre_jugador_1)
       
     def asignar_X_O(self,get_posicion):
         global turno, nombre_jugador_1,nombre_jugador_2
@@ -50,12 +50,18 @@ class ListaSimple:
         while actual1:
            
             if actual1.dato["posicion"] == get_posicion and turno == 0:
-                actual1.dato["valor"] = "X"
                 lista_btns[get_posicion].config(bg="white")
-                lista_btns[get_posicion].config(text="X")
+
+                if actual1.dato["valor"] == "Null":
+                    actual1.dato["valor"] = "X"
+                    lista_btns[get_posicion].config(text="X")
+                else:
+                    actual1.dato["valor"] = "Null"
+                    lista_btns[get_posicion].config(text="")
                 #lista_btns[get_posicion].config(state="disable")
                 turno = 1
                 turno_jugador.set("Turno: " + nombre_jugador_2)
+                #print(actual1.dato["posicion"])        
             elif actual1.dato["posicion"] == get_posicion and turno == 1:
                 actual1.dato["valor"] = "O"
                 lista_btns[get_posicion].config(bg="lightblue")
@@ -63,8 +69,13 @@ class ListaSimple:
                 #lista_btns[get_posicion].config(state="disable")
                 turno = 0
                 turno_jugador.set("Turno: " + nombre_jugador_1)
+                #print(actual1.dato["posicion"])
+                
+           
+
             lista_btns[get_posicion].config(state="disable")
             actual1 = actual1.siguiente
+        mi_lista.validar_ganador()
             
         actual = self.cabeza
         while actual:
@@ -74,6 +85,34 @@ class ListaSimple:
             
         #print("None")
         #print(posicion  mcvv)
+      
+
+    def validar_ganador(self):
+        nodo = self.cabeza
+        tablero = []
+        while nodo:
+            tablero.append(nodo.dato)
+            nodo = nodo.siguiente
+        print("---------------------------------------------------")
+        print(tablero[0]["posicion"])
+      
+
+        if(tablero[0]["valor"] == "X" and tablero[1]["valor"] == "X" and tablero[2]["valor"] == "X") or (tablero[3]["valor"] == "X" and tablero[4]["valor"] == "X" and tablero[5]["valor"] == "X") or (tablero[6]["valor"] == "X" and tablero[7]["valor"] == "X" and tablero[8]["valor"] == "X"):
+            messagebox.showinfo("Felicidades!", "GANADOR: " + nombre_jugador_1)
+            mi_lista.funcion_iniciar()
+        elif(tablero[0]["valor"] == "X" and tablero[3]["valor"] == "X" and tablero[6]["valor"] == "X") or (tablero[1]["valor"] == "X" and tablero[4]["valor"] == "X" and tablero[7]["valor"] == "X") or (tablero[2]["valor"] == "X" and tablero[5]["valor"] == "X" and tablero[8]["valor"] == "X"):
+            messagebox.showinfo("Felicidades!", "GANADOR: " + nombre_jugador_1)
+        elif(tablero[0]["valor"] == "X" and tablero[4]["valor"] == "X" and tablero[8]["valor"] == "X") or (tablero[2]["valor"] == "X" and tablero[4]["valor"] == "X" and tablero[6]["valor"] == "X"):
+            messagebox.showinfo("Felicidades!", "GANADOR: " + nombre_jugador_1)
+        if(tablero[0]["valor"] == "O" and tablero[1]["valor"] == "O" and tablero[2]["valor"] == "O") or (tablero[3]["valor"] == "O" and tablero[4]["valor"] == "O" and tablero[5]["valor"] == "O") or (tablero[6]["valor"] == "O" and tablero[7]["valor"] == "O" and tablero[8]["valor"] == "O"):
+            messagebox.showinfo("Felicidades!", "GANADOR: " + nombre_jugador_2)
+        elif(tablero[0]["valor"] == "O" and tablero[3]["valor"] == "O" and tablero[6]["valor"] == "O") or (tablero[1]["valor"] == "O" and tablero[4]["valor"] == "O" and tablero[7]["valor"] == "O") or (tablero[2]["valor"] == "O" and tablero[5]["valor"] == "O" and tablero[8]["valor"] == "O"):
+            messagebox.showinfo("Felicidades!", "GANADOR: " + nombre_jugador_2)
+        elif(tablero[0]["valor"] == "O" and tablero[4]["valor"] == "O" and tablero[8]["valor"] == "O") or (tablero[2]["valor"] == "O" and tablero[4]["valor"] == "O" and tablero[6]["valor"] == "O"):
+            messagebox.showinfo("Felicidades!", "GANADOR: " + nombre_jugador_2)
+            
+       
+        print("---------------------------------------------------")
     def desbloquear(self):
         for i in range(0,9):
             lista_btns[i].config(state="normal")
